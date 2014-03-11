@@ -12,6 +12,10 @@
 
                     bool operator() (Core::DeckTemplate const & a, Core::DeckTemplate const &b) const;
             };
+
+            typedef std::set<Core::DeckTemplate::Ptr, Mutator::DerefCompareLT> DeckSet;
+            typedef std::set<Core::DeckTemplate::ConstPtr, Mutator::DerefCompareLT> CDeckSet;
+            typedef std::set<Core::StaticDeckTemplate::ConstPtr, Mutator::DerefCompareLT> CSDeckSet;
         }
     }
 #endif

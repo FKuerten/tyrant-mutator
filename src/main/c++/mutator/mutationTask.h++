@@ -8,7 +8,7 @@
 
             class MutationTask {
                 public:
-                    Tyrant::Core::DeckTemplate::Ptr baseDeck;
+                    Tyrant::Core::DeckTemplate::ConstPtr baseDeck;
                     unsigned int mutationLevel;
                     bool onlyAutoDecks;
                     bool restrictToOwnedCards;

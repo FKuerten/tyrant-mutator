@@ -11,7 +11,7 @@
             class MutatingIterator {
                 // types
                 public:
-                    typedef ::Tyrant::Core::DeckTemplate::ConstPtr value_type;
+                    typedef ::Tyrant::Core::StaticDeckTemplate::ConstPtr value_type;
                     typedef std::set<value_type, DerefCompareLT> CDeckSet;
                     typedef CDeckSet::const_iterator BaseIterator;
                     typedef std::shared_ptr<MutatingIterator> Ptr;
