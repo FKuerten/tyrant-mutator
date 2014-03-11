@@ -88,6 +88,7 @@ namespace Tyrant {
             std::multiset<unsigned int> ownedCards = loadOwnedCards("ownedcards.txt");
             this->buildAllowedCards(ownedCards);
             //std::clog << "AM::AM() commanders: " << this->allowedCommanders.size() << std::endl;
+            assertX(this->allowedCommanders.find(0) == this->allowedCommanders.end());
         }
 
         AbstractMutator::~AbstractMutator()
@@ -103,15 +104,22 @@ namespace Tyrant {
         void
         AbstractMutator::buildAllowedCards(std::multiset<unsigned int> const & ownedCards)
         {
+            assertX(ownedCards.find(0) == ownedCards.end());
             for(unsigned int const cardId : ownedCards) {
-                Core::Cards::Card const card = this->cardDB[cardId];
-                if (card.type == Core::Cards::CardType::COMMANDER) {
-                    this->allowedCommanders.insert(card.id);
-                } else {
-                    this->allowedNonCommanderCards.insert(card.id);
-                    if (this->allowedNonCommanderCardsWithCount.count(card.id) < 10) {
-                        this->allowedNonCommanderCardsWithCount.insert(card.id);
+                assertX(cardId != 0);
+                try {
+                    Core::Cards::Card const card = this->cardDB.at(cardId);
+                    if (card.type == Core::Cards::CardType::COMMANDER) {
+                        assertX(card.id != 0);
+                        this->allowedCommanders.insert(card.id);
+                    } else {
+                        this->allowedNonCommanderCards.insert(card.id);
+                        if (this->allowedNonCommanderCardsWithCount.count(card.id) < 10) {
+                            this->allowedNonCommanderCardsWithCount.insert(card.id);
+                        }
                     }
+                } catch (std::out_of_range &e) {
+                    throw LogicError("The cardDB misses a card. It might be empty.");
                 }
             }
             //std::clog << this->allowedCommanders.size() << " "
@@ -121,26 +129,41 @@ namespace Tyrant {
         bool
         AbstractMutator::isValid(Core::StaticDeckTemplate const & deck) const
         {
+            assertX(deck.getCommanderId() != 0);
             bool hasLegendary = false;
             std::set<Core::Cards::Card> uniques;
-            if (this->cardDB.at(deck.getCommanderId()).rarity == Core::Cards::CardRarity::LEGENDARY) {
-                hasLegendary = true;
+            try {
+                if (this->cardDB.at(deck.getCommanderId()).rarity == Core::Cards::CardRarity::LEGENDARY) {
+                    hasLegendary = true;
+                }
+            } catch (std::out_of_range & e) {
+                std::stringstream ssMessage;
+                ssMessage << "Commander id=" << deck.getCommanderId()
+                          << " is missing in the cardDB.";
+                throw LogicError(ssMessage.str());
             }
             for(size_t i = 0; i < deck.getNumberOfNonCommanderCards(); i++) {
                 unsigned int const cardId = deck.getCardIdAtIndex(i);
-                Core::Cards::Card card = this->cardDB.at(cardId);
-                if (card.rarity == Core::Cards::CardRarity::LEGENDARY) {
-                    if (hasLegendary) {
-                        return false;
-                    } else {
-                        hasLegendary = true;
+                try {
+                    Core::Cards::Card card = this->cardDB.at(cardId);
+                    if (card.rarity == Core::Cards::CardRarity::LEGENDARY) {
+                        if (hasLegendary) {
+                            return false;
+                        } else {
+                            hasLegendary = true;
+                        }
+                    } else if (card.rarity == Core::Cards::CardRarity::UNIQUE) {
+                        if (uniques.find(card) != uniques.end()) {
+                            return false;
+                        } else {
+                            uniques.insert(card);
+                        }
                     }
-                } else if (card.rarity == Core::Cards::CardRarity::UNIQUE) {
-                    if (uniques.find(card) != uniques.end()) {
-                        return false;
-                    } else {
-                        uniques.insert(card);
-                    }
+                } catch (std::out_of_range & e) {
+                    std::stringstream ssMessage;
+                    ssMessage << "Card id=" << cardId
+                          << " is missing in the cardDB.";
+                    throw LogicError(ssMessage.str());
                 }
             } // for
             return true;

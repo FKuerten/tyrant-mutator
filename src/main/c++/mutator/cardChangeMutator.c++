@@ -17,6 +17,7 @@ namespace Tyrant {
 
         CardChangeMutator::CardChangeMutator()
         {
+            assertX(this->allowedCommanders.find(0) == this->allowedCommanders.end());
             //std::clog << "CCM::CCM() commanders: " << this->allowedCommanders.size() << std::endl;
         }
 
@@ -27,6 +28,7 @@ namespace Tyrant {
         MutationResult
         CardChangeMutator::mutate(MutationTask const & task)
         {
+            assertX(this->allowedCommanders.find(0) == this->allowedCommanders.end());
             // We only mutate certain deck types
             if (Core::StaticDeckTemplate::ConstPtr baseDeck = std::dynamic_pointer_cast<Core::StaticDeckTemplate const>(task.baseDeck)) {
                 CardChangeMutatorGenerator::CDeckSet input;

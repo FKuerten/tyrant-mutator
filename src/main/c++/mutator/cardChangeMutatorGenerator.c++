@@ -36,6 +36,11 @@ namespace Tyrant {
         , task(task)
         , stage0(SETUP)
         {
+            // sanity check
+            assertGT(this->mutator->allowedCommanders.size(),0u);
+            assertX(
+                this->mutator->allowedCommanders.find(0) == this->mutator->allowedCommanders.end()
+            );
             //std::clog << "commanders: " << mutator->allowedCommanders.size() << std::endl;
             this->findNext();
         }
@@ -82,6 +87,7 @@ namespace Tyrant {
                         if (this->task.mutateChangeCommander()) {
                             //std::clog << "change commander setup" << std::endl;
                             this->stage1Iter = this->mutator->allowedCommanders.cbegin();
+                            assertX(*(this->stage1Iter) != 0);
                             this->stage1IterEnd = this->mutator->allowedCommanders.cend();
                             //std::clog << "commanders: " << this->mutator->allowedCommanders.size() << std::endl;
                             this->stage0 = CHANGE_COMMANDER_EXECUTION;
@@ -94,6 +100,7 @@ namespace Tyrant {
                         assertX(this->task.mutateChangeCommander());
                         if (this->stage1Iter != this->stage1IterEnd) {
                             unsigned int const commanderId = *(this->stage1Iter);
+                            assertX(commanderId != 0);
                             //std::clog << "change commander: " << commanderId << std::endl;
                             Core::StaticDeckTemplate::Ptr mutation = currentBaseDeck.withCommander(commanderId);
                             //std::clog << "mutation generated " << std::string(*mutation) << std::endl;
