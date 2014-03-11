@@ -304,6 +304,7 @@ namespace Tyrant {
                         //std::clog << "after incrementing DeckSet::const_iterator" << std::endl;
                         this->stage0 = SETUP;
                         break;
+                    default: throw LogicError("switch");
                 } // switch stage0
             } // while
         }
