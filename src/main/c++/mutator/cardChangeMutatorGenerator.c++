@@ -391,7 +391,7 @@ namespace Tyrant {
                 case CardChangeMutatorGenerator::REPLACE_CARD_SETUP:
                 case CardChangeMutatorGenerator::ORDER:
                     // should never stop in these with _hasNext true
-                    assertX(false);
+                    throw LogicError("Unexpected case");
                 case CardChangeMutatorGenerator::CHANGE_COMMANDER_SETUP:
                 case CardChangeMutatorGenerator::STEP:
                     return true;
@@ -421,7 +421,7 @@ namespace Tyrant {
                     assertEQ(this->stage2NumberEnd, rhs.stage2NumberEnd);
                     return this->stage2Number == rhs.stage2Number;
                 default:
-                    assertX(false);
+                    throw LogicError("Unexpected case");
             }
         }
     }
