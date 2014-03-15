@@ -21,7 +21,9 @@
                 protected:
                     Tyrant::Core::Cards::Cards cardDB;
                     std::set<unsigned int> allowedCommanders;
+                    std::vector<unsigned int> allowedCommandersVector;
                     std::set<unsigned int> allowedNonCommanderCards;
+                    std::vector<unsigned int> allowedNonCommandersVector;
                     std::multiset<unsigned int> allowedNonCommanderCardsWithCount;
 
                 public:
@@ -41,6 +43,9 @@
                     static bool isOrdered(Core::StaticDeckTemplate const & deck);
                     static Core::SimpleOrderedDeckTemplate::Ptr asOrdered(Core::StaticDeckTemplate const & orig);
                     static Core::AutoDeckTemplate::Ptr asUnordered(Core::StaticDeckTemplate const & orig);
+
+                    unsigned int getRandomOwnedCommander() const;
+                    unsigned int getRandomOwnedNonCommander() const;
 
             };
 

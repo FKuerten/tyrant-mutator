@@ -122,6 +122,8 @@ namespace Tyrant {
                     throw LogicError("The cardDB misses a card. It might be empty.");
                 }
             }
+            this->allowedCommandersVector.assign(this->allowedCommanders.begin(), this->allowedCommanders.end());
+            this->allowedNonCommandersVector.assign(this->allowedNonCommanderCards.begin(), this->allowedNonCommanderCards.end());
             //std::clog << this->allowedCommanders.size() << " "
             //          << this->allowedNonCommanderCards.size() << std::endl;
         }
@@ -265,6 +267,20 @@ namespace Tyrant {
             return Core::SimpleOrderedDeckTemplate::Ptr(
                 new Core::SimpleOrderedDeckTemplate(cards)
             );
+        }
+
+        unsigned int
+        AbstractMutator::getRandomOwnedCommander() const
+        {
+            unsigned int index = static_cast<unsigned int>(rand()) % this->allowedCommandersVector.size();
+            return this->allowedCommandersVector[index];
+        }
+
+        unsigned int
+        AbstractMutator::getRandomOwnedNonCommander() const
+        {
+            unsigned int index = static_cast<unsigned int>(rand()) % this->allowedNonCommandersVector.size();
+            return this->allowedNonCommandersVector[index];
         }
 
     }

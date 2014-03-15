@@ -20,6 +20,8 @@
                     CardChangeMutator();
                     virtual ~CardChangeMutator();
                     virtual MutationResult mutate(MutationTask const & task);
+                    virtual Core::StaticDeckTemplate::ConstPtr quickMutate(Core::DeckTemplate::ConstPtr deck);
+
 
                     virtual void abort();
 

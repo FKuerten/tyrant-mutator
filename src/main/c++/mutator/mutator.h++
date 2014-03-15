@@ -15,6 +15,7 @@
                 public:
                     virtual ~Mutator();
                     virtual MutationResult mutate(MutationTask const & task) = 0;
+                    virtual Core::StaticDeckTemplate::ConstPtr quickMutate(Core::DeckTemplate::ConstPtr deck) = 0;
                     virtual void abort() = 0;
             };
 
