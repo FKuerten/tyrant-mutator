@@ -83,7 +83,7 @@ namespace Tyrant {
                 } else if (roll < flipOrderProbability + removeCardProbability + addCardProbability + swapAdjacentCardProbability) {
                     unsigned int const size = baseDeck->getNumberOfNonCommanderCards();
                     if (size > 1) {
-                        unsigned int index = static_cast<unsigned int>(rand());
+                        unsigned int index = static_cast<unsigned int>(rand()) % (size-1);
                         return baseDeck->withSwappedCards(index, index+1);
                     } else {
                         return baseDeck;
