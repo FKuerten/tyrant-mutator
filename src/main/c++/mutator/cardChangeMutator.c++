@@ -57,48 +57,60 @@ namespace Tyrant {
                 double const removeCardProbability = 0.2;
                 double const addCardProbability= 0.2;
                 double const swapAdjacentCardProbability=0.1;
+
+                Core::StaticDeckTemplate::ConstPtr result;
                 if (roll < flipOrderProbability) {
                     if (this->isOrdered(*baseDeck)) {
-                        return this->asUnordered(*baseDeck);
+                        result = this->asUnordered(*baseDeck);
                     } else {
-                        return this->asOrdered(*baseDeck);
+                        result = this->asOrdered(*baseDeck);
                     }
                 } else if (roll < flipOrderProbability + removeCardProbability) {
                     unsigned int const size = baseDeck->getNumberOfNonCommanderCards();
                     if (size > 0) {
                         unsigned int index = static_cast<unsigned int>(rand()) % size;
-                        return baseDeck->withoutCardAtIndex(index);
+                        result = baseDeck->withoutCardAtIndex(index);
                     } else {
-                        return baseDeck;
+                        result = baseDeck;
                     }
                 } else if (roll < flipOrderProbability + removeCardProbability + addCardProbability) {
                     unsigned int const size = baseDeck->getNumberOfNonCommanderCards();
                     if (size < 10) {
                         unsigned int index = static_cast<unsigned int>(rand()) % (size+1);
                         unsigned int cardId = this->getRandomOwnedNonCommander();
-                        return baseDeck->withCardAtIndex(cardId, index);
+                        result = baseDeck->withCardAtIndex(cardId, index);
                     } else {
-                        return baseDeck;
+                        result = baseDeck;
                     }
                 } else if (roll < flipOrderProbability + removeCardProbability + addCardProbability + swapAdjacentCardProbability) {
                     unsigned int const size = baseDeck->getNumberOfNonCommanderCards();
                     if (size > 1) {
                         unsigned int index = static_cast<unsigned int>(rand()) % (size-1);
-                        return baseDeck->withSwappedCards(index, index+1);
+                        result = baseDeck->withSwappedCards(index, index+1);
                     } else {
-                        return baseDeck;
+                        result = baseDeck;
                     }
                 } else {
+                    // replace
                     unsigned int const size = baseDeck->getNumberOfNonCommanderCards();
-                    unsigned int index = static_cast<unsigned int>(rand()) % size;
-                    if(index == 0) {
-                        unsigned int cardId = this->getRandomOwnedCommander();
-                        return baseDeck->withCommander(cardId);
+                    if (size > 0) {
+                        unsigned int index = static_cast<unsigned int>(rand()) % size;
+                        if(index == 0) {
+                            unsigned int cardId = this->getRandomOwnedCommander();
+                            result = baseDeck->withCommander(cardId);
+                        } else {
+                            index--;
+                            unsigned int cardId = this->getRandomOwnedNonCommander();
+                            result = baseDeck->withReplacedCardAtIndex(cardId, index);
+                        }
                     } else {
-                        index--;
-                        unsigned int cardId = this->getRandomOwnedNonCommander();
-                        return baseDeck->withReplacedCardAtIndex(cardId, index);
+                        result = baseDeck;
                     }
+                }
+                if (this->isValid(*result)) {
+                    return result;
+                } else {
+                    return baseDeck;
                 }
             } else {
                 throw InvalidUserInputError("Not supported.");
