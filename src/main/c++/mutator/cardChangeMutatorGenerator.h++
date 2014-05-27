@@ -37,10 +37,10 @@
                     Stages stage0;
                     std::set<unsigned int>::const_iterator stage1Iter;
                     std::set<unsigned int>::const_iterator stage1IterEnd;
-                    unsigned int stage1Number;
-                    unsigned int stage1NumberEnd;
-                    unsigned int stage2Number;
-                    unsigned int stage2NumberEnd;
+                    size_t stage1Number;
+                    size_t stage1NumberEnd;
+                    size_t stage2Number;
+                    size_t stage2NumberEnd;
 
                     value_type nextResult;
                     bool _hasNext;

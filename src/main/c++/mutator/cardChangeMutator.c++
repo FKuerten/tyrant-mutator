@@ -66,35 +66,36 @@ namespace Tyrant {
                         result = this->asOrdered(*baseDeck);
                     }
                 } else if (roll < flipOrderProbability + removeCardProbability) {
-                    unsigned int const size = baseDeck->getNumberOfNonCommanderCards();
+                    size_t const size = baseDeck->getNumberOfNonCommanderCards();
                     if (size > 0) {
-                        unsigned int index = static_cast<unsigned int>(rand()) % size;
+                        size_t index = static_cast<size_t>(rand()) % size;
                         result = baseDeck->withoutCardAtIndex(index);
                     } else {
                         result = baseDeck;
                     }
                 } else if (roll < flipOrderProbability + removeCardProbability + addCardProbability) {
-                    unsigned int const size = baseDeck->getNumberOfNonCommanderCards();
+                    size_t const size = baseDeck->getNumberOfNonCommanderCards();
                     if (size < 10) {
-                        unsigned int index = static_cast<unsigned int>(rand()) % (size+1);
+                        size_t index = static_cast<size_t>(rand()) % (size+1);
                         unsigned int cardId = this->getRandomOwnedNonCommander();
                         result = baseDeck->withCardAtIndex(cardId, index);
                     } else {
                         result = baseDeck;
                     }
                 } else if (roll < flipOrderProbability + removeCardProbability + addCardProbability + swapAdjacentCardProbability) {
-                    unsigned int const size = baseDeck->getNumberOfNonCommanderCards();
+                    size_t
+                     const size = baseDeck->getNumberOfNonCommanderCards();
                     if (size > 1) {
-                        unsigned int index = static_cast<unsigned int>(rand()) % (size-1);
+                        size_t index = static_cast<size_t>(rand()) % (size-1);
                         result = baseDeck->withSwappedCards(index, index+1);
                     } else {
                         result = baseDeck;
                     }
                 } else {
                     // replace
-                    unsigned int const size = baseDeck->getNumberOfNonCommanderCards();
+                    size_t const size = baseDeck->getNumberOfNonCommanderCards();
                     if (size > 0) {
-                        unsigned int index = static_cast<unsigned int>(rand()) % size;
+                        size_t index = static_cast<size_t>(rand()) % size;
                         if(index == 0) {
                             unsigned int cardId = this->getRandomOwnedCommander();
                             result = baseDeck->withCommander(cardId);

@@ -272,14 +272,14 @@ namespace Tyrant {
         unsigned int
         AbstractMutator::getRandomOwnedCommander() const
         {
-            unsigned int index = static_cast<unsigned int>(rand()) % this->allowedCommandersVector.size();
+            size_t index = static_cast<size_t>(rand()) % this->allowedCommandersVector.size();
             return this->allowedCommandersVector[index];
         }
 
         unsigned int
         AbstractMutator::getRandomOwnedNonCommander() const
         {
-            unsigned int index = static_cast<unsigned int>(rand()) % this->allowedNonCommandersVector.size();
+            size_t index = static_cast<size_t>(rand()) % this->allowedNonCommandersVector.size();
             return this->allowedNonCommandersVector[index];
         }
 

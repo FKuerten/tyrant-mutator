@@ -37,7 +37,7 @@ namespace Tyrant {
         , stage0(SETUP)
         {
             // sanity check
-            assertGT(this->mutator->allowedCommanders.size(),0u);
+            assertGT(this->mutator->allowedCommanders.size(),static_cast<size_t>(0u));
             assertX(
                 this->mutator->allowedCommanders.find(0) == this->mutator->allowedCommanders.end()
             );
@@ -129,7 +129,7 @@ namespace Tyrant {
                     case REMOVE_CARD_EXECUTION: // remove card: execution
                         assertX(this->task.mutateRemoveCard());
                         if (this->stage1Number != this->stage1NumberEnd) {
-                            unsigned int const i = this->stage1Number;
+                            size_t const i = this->stage1Number;
                             Core::StaticDeckTemplate::Ptr mutation = currentBaseDeck.withoutCardAtIndex(i);
                             this->stage1Number++;
                             this->nextResult = mutation;
@@ -188,7 +188,7 @@ namespace Tyrant {
                         if (this->stage1Iter != this->stage1IterEnd) {
                             if (this->stage2Number != this->stage2NumberEnd) {
                                 unsigned int const cardId = *this->stage1Iter;
-                                unsigned int i = this->stage2Number;
+                                size_t i = this->stage2Number;
                                 Core::StaticDeckTemplate::Ptr mutation = currentBaseDeck.withCardAtIndex(cardId, i);
                                 if(this->mutator->isValid(*mutation) && this->mutator->canCompose(*mutation)) {
                                     this->stage2Number++;
@@ -231,8 +231,8 @@ namespace Tyrant {
                         assertX(this->task.mutateAddCard() && this->mutator->isOrdered(currentBaseDeck));
                         assertX(this->stage1Number != this->stage1NumberEnd);
                         if (this->stage2Number != this->stage2NumberEnd) {
-                            unsigned int const i = this->stage1Number;
-                            unsigned int const j = this->stage2Number;
+                            size_t const i = this->stage1Number;
+                            size_t const j = this->stage2Number;
                             assertLT(i,j);
                             Core::StaticDeckTemplate::Ptr mutation = currentBaseDeck.withSwappedCards(i,j);
                             this->stage2Number++;
@@ -271,7 +271,7 @@ namespace Tyrant {
                         assertX(this->stage1Iter != this->stage1IterEnd);
                         if (this->stage2Number != this->stage2NumberEnd) {
                             unsigned int const cardId = *this->stage1Iter;
-                            unsigned int i = this->stage2Number;
+                            size_t i = this->stage2Number;
                             Core::StaticDeckTemplate::Ptr mutation = currentBaseDeck.withReplacedCardAtIndex(cardId, i);
                             if(this->mutator->isValid(*mutation) && this->mutator->canCompose(*mutation)) {
                                 this->stage2Number++;
