@@ -54,7 +54,7 @@ namespace Tyrant {
             } catch (std::ios_base::failure & e) {
                 std::stringstream ssMessage;
                 ssMessage << "Got am ios_base::failure with error code ";
-                 #if (__GNUC__ < 4) || ((__GNUC__ == 4) and (__GNUC_MINOR__ <= 8))
+                 #if (__GNUC__ < 4) || ((__GNUC__ == 4) and (__GNUC_MINOR__ <= 9))
                     ssMessage << "(broken gcc does not support new ios_base::failure yet)";
                 #else
                     ssMessage << e.code();
